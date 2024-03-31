@@ -2,6 +2,7 @@ package com.thefinalscompanion
 
 import LeaderboardEntry
 import LeaderboardResponse
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -66,9 +67,15 @@ class MainActivity : ComponentActivity() {
 
 
     private fun setupRecyclerView(leaderboardEntries: List<LeaderboardEntry>) {
-        val adapter = LeaderboardAdapter(leaderboardEntries)
-        val recyclerView: RecyclerView = findViewById(R.id.leaderboardRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        val adapter = LeaderboardAdapter(leaderboardEntries) { entry ->
+            val intent = Intent(this, PlayerDetailsActivity::class.java)
+            intent.putExtra("playerDetails", entry)
+            startActivity(intent)
+        }
+        findViewById<RecyclerView>(R.id.leaderboardRecyclerView).apply {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapter
+        }
     }
+
 }

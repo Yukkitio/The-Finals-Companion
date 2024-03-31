@@ -1,3 +1,6 @@
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 data class LeaderboardResponse(
     val meta: MetaData,
@@ -12,6 +15,7 @@ data class MetaData(
     val returnCountOnly: Boolean
 )
 
+@Parcelize
 data class LeaderboardEntry(
     val r: Int, // Rank
     val name: String, // Nom du joueur
@@ -24,4 +28,4 @@ data class LeaderboardEntry(
     val steam: String, // Nom d'utilisateur Steam
     val xbox: String, // Nom d'utilisateur Xbox, inclus si nécessaire
     val psn: String // Nom d'utilisateur PSN, inclus si nécessaire
-)
+) : Parcelable

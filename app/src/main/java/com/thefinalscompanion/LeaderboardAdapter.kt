@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.StrictMath.abs
 
-class LeaderboardAdapter(private val entries: List<LeaderboardEntry>) : RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
+class LeaderboardAdapter(private val entries: List<LeaderboardEntry>, private val onItemClick: (LeaderboardEntry) -> Unit) : RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvWorldRank: TextView = view.findViewById(R.id.tvWorldRank)
@@ -35,6 +35,9 @@ class LeaderboardAdapter(private val entries: List<LeaderboardEntry>) : Recycler
         holder.tvWorldRank.text = entry.r.toString()
         holder.tvName.text = displayName
         holder.ivRankedRank.setImageResource(getRankedIcon(entry.ri))
+        holder.itemView.setOnClickListener {
+            onItemClick(entry) // Appel du callback quand un élément est cliqué
+        }
 
         val rankChange = entry.or - entry.r // Calculer la variation de rang
         when {
