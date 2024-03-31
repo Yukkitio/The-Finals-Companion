@@ -11,20 +11,27 @@
         android:id="@+id/backButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:padding="12dp"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/baseline_arrow_back_24"
+        android:contentDescription="@string/todo"
+        android:padding="12dp"
+        android:src="@drawable/round_arrow_back_24"
         android:tint="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Return" />
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <CheckBox
         android:id="@+id/favoriteCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/selector_favorite_checkbox"
         android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:button="@drawable/selector_favorite_checkbox"
+        android:buttonTint="@color/textColor"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:scaleX="1.25"
+        android:scaleY="1.25"
+        app:layout_constraintBottom_toBottomOf="@+id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/backButton" />
 
@@ -46,7 +53,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
-            android:text="World Rank" />
+            android:text="@string/world_rank_tab"
+            android:textColor="#F5F5F5" />
 
         <View
             android:layout_width="match_parent"
@@ -59,7 +67,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="1" />
+            android:textSize="24sp"
+            android:text="@string/world_rank" />
     </LinearLayout>
 
 
@@ -72,7 +81,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/worldRankContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/worldRankContainer"
-        app:layout_constraintWidth_percent="0.5">
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="TextSizeCheck">
 
         <TextView
             android:id="@+id/RankChangeHeader"
@@ -80,7 +90,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Last 24h" />
+            android:text="@string/last_24h"
+            android:textColor="#F5F5F5" />
 
         <View
             android:layout_width="match_parent"
@@ -93,7 +104,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="rank_chang" />
+            android:text="@string/rank_change"
+            android:textSize="24sp" />
     </LinearLayout>
 
     <!-- Xbox Name Container -->
@@ -106,21 +118,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/embark" />
+            android:src="@drawable/embark"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/embarkPseudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="embark_pseudo" />
+            android:textSize="24sp"
+            android:text="@string/embark_pseudo" />
     </LinearLayout>
 
 
@@ -147,14 +162,16 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/steam" />
+                android:src="@drawable/steam"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/steamName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="steam_name" />
+                android:text="@string/steam_name"
+                android:textColor="#F5F5F5" />
         </LinearLayout>
 
         <!-- Xbox Name Container -->
@@ -171,14 +188,16 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/xbox" />
+                android:src="@drawable/xbox"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/xboxName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="xbox_name" />
+                android:text="@string/xbox_name"
+                android:textColor="#F5F5F5" />
         </LinearLayout>
 
         <!-- PSN Name Container -->
@@ -194,14 +213,16 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/psn" />
+                android:src="@drawable/psn"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/psnName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="psn_name" />
+                android:text="@string/psn_name"
+                android:textColor="#F5F5F5" />
         </LinearLayout>
     </LinearLayout>
 
@@ -215,6 +236,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rankChangeContainer"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout"
+        android:contentDescription="@string/todo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,13 +14,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/todo" />
 
     <EditText
         android:id="@+id/searchEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Search by Name"
+        android:hint="@string/search_by_name"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,21 @@
         android:background="@drawable/search_edittext_background"
         android:textColor="#000"
         android:textColorHint="#666"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:autofillHints="" />
+
+    <!-- RecyclerView pour afficher le joueur favori -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoriteRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/case_rounded_background"
+        app:layout_constraintTop_toBottomOf="@id/searchEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp" />
 
     <LinearLayout
         android:id="@+id/tableContainer"
@@ -39,11 +54,11 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:background="@drawable/case_rounded_background"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText"
+        app:layout_constraintTop_toBottomOf="@id/favoriteRecyclerView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp">
@@ -59,28 +74,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Rank"
+                android:text="@string/rank"
                 android:gravity="center" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Last 24h"
+                android:text="@string/last_24h"
                 android:gravity="center" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Name"
+                android:text="@string/name"
                 android:gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fame"
+                android:text="@string/fame"
                 android:gravity="center" />
 
         </LinearLayout>

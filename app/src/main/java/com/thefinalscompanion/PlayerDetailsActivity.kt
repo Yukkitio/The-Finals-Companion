@@ -1,44 +1,63 @@
 package com.thefinalscompanion
 
 import LeaderboardEntry
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.edit
+import kotlin.math.absoluteValue
 
 class PlayerDetailsActivity : ComponentActivity() {
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_details)
 
+        prefs = getSharedPreferences("Favorites", MODE_PRIVATE)
+        val favoriteName = prefs.getString("favoriteName", null)
+
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
-            finish() // Termine l'activité courante, revenant ainsi à l'activité précédente dans la pile
+            finish() // Termine l'activité courante
         }
 
         val playerDetails: LeaderboardEntry? = intent.getParcelableExtra("playerDetails")
-
-        findViewById<TextView>(R.id.worldRankValue).text = "${playerDetails?.r ?: "N/A"}"
-
-        val rankChange = (playerDetails?.or ?: 0) - (playerDetails?.r ?: 0)
-        val rankChangeText = when {
-            rankChange > 0 -> "+$rankChange"
-            rankChange < 0 -> "$rankChange"
-            else -> "0"
-        }
-        findViewById<TextView>(R.id.rankChange).text = rankChangeText
-
-        findViewById<TextView>(R.id.embarkPseudo).text = playerDetails?.name ?: "N/A"
-
-        findViewById<TextView>(R.id.steamName).text = playerDetails?.steam ?: "-"
-        findViewById<TextView>(R.id.xboxName).text = playerDetails?.xbox ?: "-"
-        findViewById<TextView>(R.id.psnName).text = playerDetails?.psn ?: "-"
-
-        findViewById<ImageView>(R.id.rankIcon).setImageResource(getRankedIcon((playerDetails?.ri ?: "0") as Int))
-
+        setupUI(playerDetails, favoriteName)
     }
 
+    private fun setupUI(playerDetails: LeaderboardEntry?, favoriteName: String?) {
+        playerDetails?.let { details ->
+            val favoriteCheckbox = findViewById<CheckBox>(R.id.favoriteCheckbox)
+            favoriteCheckbox.isChecked = details.name == favoriteName
+
+            findViewById<TextView>(R.id.worldRankValue).text = details.r.toString()
+
+            val rankChange = details.or - details.r
+            findViewById<TextView>(R.id.rankChange).text = when {
+                rankChange > 0 -> "+ $rankChange"
+                rankChange < 0 -> "- ${rankChange.absoluteValue}"
+                else -> "-"
+            }
+
+            findViewById<TextView>(R.id.embarkPseudo).text = details.name.ifEmpty { "N/A" }
+            findViewById<TextView>(R.id.steamName).text = details.steam.ifEmpty { "-" }
+            findViewById<TextView>(R.id.xboxName).text = details.xbox.ifEmpty { "-" }
+            findViewById<TextView>(R.id.psnName).text = details.psn.ifEmpty { "-" }
+            findViewById<ImageView>(R.id.rankIcon).setImageResource(getRankedIcon(details.ri))
+
+            favoriteCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                prefs.edit {
+                    if (isChecked) putString("favoriteName", details.name)
+                    else remove("favoriteName")
+                    setResult(RESULT_OK)
+                }
+            }
+        }
+    }
     private fun getRankedIcon(ri: Int): Int {
         return when (ri) {
             0 -> R.drawable.unranked
@@ -66,4 +85,3 @@ class PlayerDetailsActivity : ComponentActivity() {
         }
     }
 }
-

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">The Finals Companion</string>
+    <string name="psn_name">psn_name</string>
+    <string name="xbox_name">xbox_name</string>
+    <string name="steam_name">steam_name</string>
+    <string name="embark_pseudo">embark_pseudo</string>
+    <string name="rank_change">rank_change</string>
+    <string name="last_24h">Last 24h</string>
+    <string name="world_rank">1</string>
+    <string name="world_rank_tab">World Rank</string>
+    <string name="todo">TODO</string>
+    <string name="search_by_name">Search by Name</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="fame">Fame</string>
 </resources>
