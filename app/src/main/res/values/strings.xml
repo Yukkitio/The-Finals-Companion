@@ -13,4 +13,5 @@
     <string name="rank">Rank</string>
     <string name="name">Name</string>
     <string name="fame">Fame</string>
+    <string name="refresh">Refresh</string>
 </resources>

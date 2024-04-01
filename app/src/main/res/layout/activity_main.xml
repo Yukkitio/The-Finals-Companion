@@ -21,32 +21,58 @@
         android:id="@+id/searchEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints=""
+        android:background="@drawable/search_edittext_background"
         android:hint="@string/search_by_name"
         android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/search_edittext_background"
+        android:padding="8dp"
         android:textColor="#000"
         android:textColorHint="#666"
-        android:padding="8dp"
-        android:autofillHints="" />
+        app:layout_constraintEnd_toStartOf="@+id/refreshButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize" />
 
-    <!-- RecyclerView pour afficher le joueur favori -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favoriteRecyclerView"
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/search_edittext_background"
+        android:text="@string/refresh"
+        android:textColor="#666"
+        app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchEditText"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <FrameLayout
+        android:id="@+id/favoriteFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/case_rounded_background"
         app:layout_constraintTop_toBottomOf="@id/searchEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp" />
+        android:layout_marginTop="12dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favoriteRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/case_rounded_background"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <ProgressBar
+            android:id="@+id/favoriteProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/textColor"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/tableContainer"
@@ -54,7 +80,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:background="@drawable/case_rounded_background"
-        app:layout_constraintTop_toBottomOf="@id/favoriteRecyclerView"
+        app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,56 +89,80 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp">
 
-        <!-- En-têtes du tableau -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="8dp"
             android:gravity="center_vertical">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/rank"
-                android:gravity="center" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/rank"
+                android:textColor="#F5F5F5" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/last_24h"
-                android:gravity="center" />
+                android:textColor="#F5F5F5" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:gravity="center"
                 android:text="@string/name"
-                android:gravity="center" />
+                android:textColor="#F5F5F5" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/fame"
-                android:gravity="center" />
+                android:textColor="#F5F5F5" />
 
         </LinearLayout>
 
-        <!-- Séparation entre en-tête et RecyclerView -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/textColor"/>
 
-        <!-- RecyclerView pour le contenu du tableau -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/leaderboardRecyclerView"
+        <FrameLayout
+            android:id="@+id/leaderboardFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/leaderboardRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <ProgressBar
+                android:id="@+id/leaderboardProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/textColor"
+                android:visibility="gone"/>
+        </FrameLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

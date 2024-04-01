@@ -10,8 +10,10 @@
 
     <color name="colorPrimary">#D3213E</color>
     <color name="textColor">#E3E9EA</color>
+    <color name="colorS2">#39005B</color>
 
     <color name="colorUp">#3ED321</color>
     <color name="colorDown">#213ED3</color>
     <color name="colorNeutral">#E3E9EA</color>
+    <color name="disabledButtonColor">#D89F9F9F</color>
 </resources>

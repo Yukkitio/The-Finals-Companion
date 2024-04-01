@@ -2,14 +2,25 @@ package com.thefinalscompanion
 
 import LeaderboardEntry
 import LeaderboardResponse
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +34,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var searchEditText: EditText
     private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var leaderboardRecyclerView: RecyclerView
+    private lateinit var refreshButton: Button
+    private lateinit var favoriteProgressBar: ProgressBar
+    private lateinit var leaderboardProgressBar: ProgressBar
     private var searchJob: Job? = null
     private val TAG = "MainActivity"
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -43,6 +57,13 @@ class MainActivity : ComponentActivity() {
         searchEditText = findViewById(R.id.searchEditText)
         favoriteRecyclerView = findViewById(R.id.favoriteRecyclerView)
         leaderboardRecyclerView = findViewById(R.id.leaderboardRecyclerView)
+        refreshButton = findViewById(R.id.refreshButton)
+        refreshButton.setOnClickListener {
+            displayFavoriteIfNeeded()
+            fetchLeaderboard()
+        }
+        favoriteProgressBar = findViewById(R.id.favoriteProgressBar)
+        leaderboardProgressBar = findViewById(R.id.leaderboardProgressBar)
 
         favoriteRecyclerView.layoutManager = LinearLayoutManager(this)
         leaderboardRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -64,6 +85,7 @@ class MainActivity : ComponentActivity() {
 
     // Récupération des données du leaderboard
     private fun fetchLeaderboard(query: String = "") {
+        setRecyclerViewLoading(leaderboardRecyclerView, leaderboardProgressBar, true)
         val apiUrl = buildApiUrl(query)
         lifecycleScope.launch {
             try {
@@ -72,6 +94,8 @@ class MainActivity : ComponentActivity() {
                 updateRecyclerView(leaderboardRecyclerView, response.data)
             } catch (e: Exception) {
                 Log.e(TAG,"Error fetching leaderboard : ", e)
+            } finally {
+                setRecyclerViewLoading(leaderboardRecyclerView, leaderboardProgressBar, false)
             }
         }
     }
@@ -94,6 +118,7 @@ class MainActivity : ComponentActivity() {
 
     // Récupération des détails du favori
     private fun fetchFavoriteDetails(favoriteName: String) {
+        setRecyclerViewLoading(favoriteRecyclerView, favoriteProgressBar, true)
         val apiUrl = buildApiUrl(favoriteName)
         lifecycleScope.launch {
             try {
@@ -104,6 +129,8 @@ class MainActivity : ComponentActivity() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error fetching favorite details", e)
+            } finally {
+                setRecyclerViewLoading(favoriteRecyclerView, favoriteProgressBar, false)
             }
         }
     }
@@ -118,4 +145,23 @@ class MainActivity : ComponentActivity() {
         }
         recyclerView.adapter = adapter
     }
+
+    // Mise a jour UI progressbar
+    private fun setRecyclerViewLoading(recyclerView: RecyclerView, progressBar: ProgressBar, isLoading: Boolean) {
+        refreshButton.isEnabled = !isLoading
+
+        if (isLoading) {
+            recyclerView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            refreshButton.alpha = 0.5f // Rendre le bouton semi-transparent pour indiquer qu'il est désactivé
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            refreshButton.alpha = 1.0f // Restaurer la pleine opacité pour indiquer que le bouton est à nouveau actif
+        }
+    }
+
+
+
+
 }

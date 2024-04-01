@@ -61,14 +61,31 @@
             android:layout_height="1dp"
             android:background="@color/textColor" />
 
-        <TextView
-            android:id="@+id/worldRankValue"
+        <FrameLayout
+            android:id="@+id/worldRankFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:textSize="24sp"
-            android:text="@string/world_rank" />
+            app:layout_constraintTop_toBottomOf="@id/searchEditText">
+
+            <TextView
+                android:id="@+id/worldRankValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/world_rank"
+                android:textSize="24sp" />
+
+            <ProgressBar
+                android:id="@+id/worldRankProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/textColor"
+                android:visibility="gone"/>
+        </FrameLayout>
+
     </LinearLayout>
 
 
@@ -98,14 +115,30 @@
             android:layout_height="1dp"
             android:background="@color/textColor" />
 
-        <TextView
-            android:id="@+id/rankChange"
+        <FrameLayout
+            android:id="@+id/last24hFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/rank_change"
-            android:textSize="24sp" />
+            app:layout_constraintTop_toBottomOf="@id/searchEditText">
+
+            <TextView
+                android:id="@+id/rankChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/rank_change"
+                android:textSize="24sp" />
+
+            <ProgressBar
+                android:id="@+id/last24hProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/textColor"
+                android:visibility="gone"/>
+        </FrameLayout>
     </LinearLayout>
 
     <!-- Xbox Name Container -->
@@ -144,7 +177,7 @@
         android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/refreshButtonDetails"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/embarkContainer">
 
@@ -162,8 +195,8 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/steam"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/todo"
+                android:src="@drawable/steam" />
 
             <TextView
                 android:id="@+id/steamName"
@@ -188,8 +221,8 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/xbox"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/todo"
+                android:src="@drawable/xbox" />
 
             <TextView
                 android:id="@+id/xboxName"
@@ -213,8 +246,8 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/psn"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/todo"
+                android:src="@drawable/psn" />
 
             <TextView
                 android:id="@+id/psnName"
@@ -226,17 +259,45 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/rankIcon"
+    <FrameLayout
+        android:id="@+id/rankIconFrameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:src="@drawable/d1"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/rankChangeContainer"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout">
+
+        <ImageView
+            android:id="@+id/rankIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/todo"
+
+            android:src="@drawable/d1" />
+
+        <ProgressBar
+            android:id="@+id/rankIconProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/textColor"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
+    <Button
+        android:id="@+id/refreshButtonDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/refresh"
+        android:textColor="#666"
+        android:background="@drawable/search_edittext_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="VisualLintButtonSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
