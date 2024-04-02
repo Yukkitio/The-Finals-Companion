@@ -79,8 +79,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\USER\Downloads\DALL·E 2024-03-31 22.51.37 - Create a visually lighter, low polygon style logo for 'The Finals Companion' app, now using a more subdued color scheme of red and black. The design s.webp" />
-                                                <entry key="scalingPercent" value="67" />
+                                                <entry key="imagePath" value="C:\Users\USER\Downloads\3 - Copie (1).jpg" />
+                                                <entry key="scalingPercent" value="86" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -108,6 +108,12 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="10002e" />
                                     </map>
                                   </option>
                                 </PersistentState>

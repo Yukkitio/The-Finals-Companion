@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<style name="Theme.TheFinalsCompanion" parent="android:Theme.Material.Light.NoActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="android:textColor">@color/textColor</item>
+    <item name="android:windowBackground">@color/colorPrimary</item>
+    <item name="android:statusBarColor">@color/notificationBarColor</item>
+    <item name="android:fontFamily">@font/saira_variable</item>
+</style>
 
-    <style name="Theme.TheFinalsCompanion" parent="android:Theme.Material.Light.NoActionBar" >
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:textColor">@color/textColor</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
-    </style>
 </resources>

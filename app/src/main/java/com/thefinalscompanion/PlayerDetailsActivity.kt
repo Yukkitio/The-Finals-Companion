@@ -13,10 +13,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 class PlayerDetailsActivity : ComponentActivity() {
@@ -85,11 +87,15 @@ class PlayerDetailsActivity : ComponentActivity() {
             findViewById<TextView>(R.id.worldRankValue).text = details.r.toString()
 
             val rankChange = details.or - details.r
-            findViewById<TextView>(R.id.rankChange).text = when {
-                rankChange > 0 -> "+ $rankChange"
-                rankChange < 0 -> "- ${rankChange.absoluteValue}"
-                else -> "-"
+            val rankChangeTextView = findViewById<TextView>(R.id.rankChange)
+            val (text, colorResId) = when {
+                rankChange > 0 -> "+ $rankChange" to R.color.positiveRankChange
+                rankChange < 0 -> "- ${abs(rankChange)}" to R.color.negativeRankChange
+                else -> "-" to R.color.textColor // Assurez-vous d'avoir une couleur par défaut définie pour le cas neutre.
             }
+            rankChangeTextView.text = text
+            rankChangeTextView.setTextColor(ContextCompat.getColor(this, colorResId))
+
 
             findViewById<TextView>(R.id.embarkPseudo).text = details.name.ifEmpty { "N/A" }
             findViewById<TextView>(R.id.steamName).text = details.steam.ifEmpty { "-" }

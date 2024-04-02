@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#39005B</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="notificationBarColor">#000000</color>
+    <color name="neonColorPink">#FE00F6</color>
+    <color name="neonColorBlue">#9CFFFF</color>
 
-    <color name="colorPrimary">#D3213E</color>
-    <color name="textColor">#E3E9EA</color>
-    <color name="colorS2">#39005B</color>
+    <color name="positiveRankChange">#FF9D3D</color>
+    <color name="negativeRankChange">#8DA9C4</color>
 
-    <color name="colorUp">#3ED321</color>
-    <color name="colorDown">#213ED3</color>
-    <color name="colorNeutral">#E3E9EA</color>
     <color name="disabledButtonColor">#D89F9F9F</color>
 </resources>

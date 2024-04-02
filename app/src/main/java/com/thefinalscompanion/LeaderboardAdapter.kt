@@ -1,6 +1,7 @@
 package com.thefinalscompanion
 
 import LeaderboardEntry
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,21 +40,17 @@ class LeaderboardAdapter(private val entries: List<LeaderboardEntry>, private va
             onItemClick(entry) // Appel du callback quand un élément est cliqué
         }
 
-        val rankChange = entry.or - entry.r // Calculer la variation de rang
-        when {
-            rankChange > 0 -> {
-                holder.imageViewRankChange.setImageResource(R.drawable.rank_up)
-                holder.tvRankChange.text = rankChange.toString()
-            }
-            rankChange < 0 -> {
-                holder.imageViewRankChange.setImageResource(R.drawable.rank_down)
-                holder.tvRankChange.text = abs(rankChange).toString() // Pour suppr le - devant le nombre
-            }
-            else -> {
-                holder.imageViewRankChange.setImageResource(R.drawable.rank_null)
-                holder.tvRankChange.text = ""
-            }
+        val context = holder.itemView.context
+        val rankChange = entry.or - entry.r
+        val (imageResId, colorResId, text) = when {
+            rankChange > 0 -> Triple(R.drawable.rank_up, R.color.positiveRankChange, rankChange.toString())
+            rankChange < 0 -> Triple(R.drawable.rank_down, R.color.negativeRankChange, abs(rankChange).toString())
+            else -> Triple(R.drawable.rank_null, R.color.textColor, "")
         }
+        holder.imageViewRankChange.setImageResource(imageResId)
+        holder.imageViewRankChange.setColorFilter(ContextCompat.getColor(context, colorResId), PorterDuff.Mode.SRC_IN)
+        holder.tvRankChange.text = text
+        holder.tvRankChange.setTextColor(ContextCompat.getColor(context, colorResId))
     }
 
     override fun getItemCount() = entries.size

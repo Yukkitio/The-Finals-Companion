@@ -10,12 +10,12 @@
         android:id="@+id/imageViewLogo"
         android:layout_width="180dp"
         android:layout_height="180dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/todo"
         android:src="@drawable/thefinalslogo"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/searchEditText"
@@ -29,8 +29,9 @@
         android:hint="@string/search_by_name"
         android:inputType="text"
         android:padding="8dp"
-        android:textColor="#000"
-        android:textColorHint="#666"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/disabledButtonColor"
+        android:textCursorDrawable="@drawable/cursor_color"
         app:layout_constraintEnd_toStartOf="@+id/refreshButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
@@ -43,58 +44,69 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/search_edittext_background"
         android:text="@string/refresh"
-        android:textColor="#666"
+        android:textColor="@color/textColor"
         app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/searchEditText"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <TextView
+        android:id="@+id/nextUpdateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_left"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/refreshButton"
+        app:layout_constraintEnd_toEndOf="@+id/refreshButton"
+        app:layout_constraintStart_toStartOf="@+id/refreshButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
     <FrameLayout
         android:id="@+id/favoriteFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/searchEditText">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favoriteRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/case_rounded_background"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp" />
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/case_rounded_background" />
 
         <ProgressBar
             android:id="@+id/favoriteProgressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:indeterminateTintMode="src_atop"
             android:indeterminateTint="@color/textColor"
-            android:visibility="gone"/>
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/tableContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:background="@drawable/case_rounded_background"
-        app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/case_rounded_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:gravity="center_vertical">
+            android:padding="8dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -133,35 +145,35 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/textColor"/>
+            android:background="@color/textColor" />
 
         <FrameLayout
             android:id="@+id/leaderboardFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favoriteFrameLayout">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/leaderboardRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <ProgressBar
                 android:id="@+id/leaderboardProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:indeterminateTintMode="src_atop"
                 android:indeterminateTint="@color/textColor"
-                android:visibility="gone"/>
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
 

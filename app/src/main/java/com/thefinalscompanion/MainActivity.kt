@@ -2,25 +2,19 @@ package com.thefinalscompanion
 
 import LeaderboardEntry
 import LeaderboardResponse
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,31 +22,38 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
 class MainActivity : ComponentActivity() {
-    // Initialisation des composants de l'UI et des variables nécessaires
     private lateinit var searchEditText: EditText
     private lateinit var favoriteRecyclerView: RecyclerView
     private lateinit var leaderboardRecyclerView: RecyclerView
     private lateinit var refreshButton: Button
     private lateinit var favoriteProgressBar: ProgressBar
     private lateinit var leaderboardProgressBar: ProgressBar
-    private var searchJob: Job? = null
+    private lateinit var nextUpdateTimeTextView: TextView
+    private lateinit var countDownTimer: CountDownTimer
+    private val updateInterval: Long = 20 * 60 * 1000 // 20 minutes en millisecondes
     private val TAG = "MainActivity"
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            displayFavoriteIfNeeded()// Favori potentiellement modifié, rafraîchir l'affichage
+            displayFavoriteIfNeeded()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setupUI()
+        startTimer()
         displayFavoriteIfNeeded()
         initSearch()
         fetchLeaderboard()
     }
+
     private fun setupUI() {
         searchEditText = findViewById(R.id.searchEditText)
         favoriteRecyclerView = findViewById(R.id.favoriteRecyclerView)
@@ -64,17 +65,17 @@ class MainActivity : ComponentActivity() {
         }
         favoriteProgressBar = findViewById(R.id.favoriteProgressBar)
         leaderboardProgressBar = findViewById(R.id.leaderboardProgressBar)
+        nextUpdateTimeTextView = findViewById(R.id.nextUpdateTimeTextView)
 
         favoriteRecyclerView.layoutManager = LinearLayoutManager(this)
         leaderboardRecyclerView.layoutManager = LinearLayoutManager(this)
     }
-    // Initialisation de la fonctionnalité de recherche
+
     private fun initSearch() {
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                searchJob?.cancel() // Annulation de la recherche précédente si l'utilisateur continue de taper
-                searchJob = lifecycleScope.launch {
-                    delay(500)// Delai pour limiter les requêtes
+                lifecycleScope.launch {
+                    delay(500)
                     fetchLeaderboard(s.toString())
                 }
             }
@@ -83,7 +84,28 @@ class MainActivity : ComponentActivity() {
         })
     }
 
-    // Récupération des données du leaderboard
+    private fun startTimer() {
+        val currentTime = Calendar.getInstance().timeInMillis
+        val elapsedTime = currentTime % updateInterval
+        val timeRemaining = updateInterval - elapsedTime
+        countDownTimer = object : CountDownTimer(timeRemaining, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                nextUpdateTimeTextView.text = formatTime(millisUntilFinished)
+            }
+            override fun onFinish() {
+                displayFavoriteIfNeeded()
+                fetchLeaderboard()
+                startTimer()
+            }
+        }.start()
+    }
+
+    private fun formatTime(millis: Long): String {
+        val formatter = SimpleDateFormat("00 : mm : ss", Locale.getDefault())
+        formatter.timeZone = TimeZone.getTimeZone("UTC")
+        return formatter.format(millis)
+    }
+
     private fun fetchLeaderboard(query: String = "") {
         setRecyclerViewLoading(leaderboardRecyclerView, leaderboardProgressBar, true)
         val apiUrl = buildApiUrl(query)
@@ -100,13 +122,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Construction de l'URL de l'API en fonction de la demande
     private fun buildApiUrl(query: String): String {
         val baseUrl = "https://api.the-finals-leaderboard.com/v1/leaderboard/s2/crossplay?raw=true"
         return if (query.isNotEmpty()) "$baseUrl&name=$query" else baseUrl
     }
 
-    // Affichage du favori s'il existe
     private fun displayFavoriteIfNeeded() {
         val favoriteName = getSharedPreferences("Favorites", MODE_PRIVATE).getString("favoriteName", null)
         if (!favoriteName.isNullOrEmpty()) {
@@ -116,7 +136,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Récupération des détails du favori
     private fun fetchFavoriteDetails(favoriteName: String) {
         setRecyclerViewLoading(favoriteRecyclerView, favoriteProgressBar, true)
         val apiUrl = buildApiUrl(favoriteName)
@@ -135,10 +154,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Mise à jour du tableau
     private fun updateRecyclerView(recyclerView: RecyclerView, data: List<LeaderboardEntry>) {
         val adapter = LeaderboardAdapter(data) { entry ->
-            val intent = Intent(this, PlayerDetailsActivity::class.java).apply {
+            val intent = Intent(this@MainActivity, PlayerDetailsActivity::class.java).apply {
                 putExtra("playerDetails", entry)
             }
             startForResult.launch(intent)
@@ -146,22 +164,22 @@ class MainActivity : ComponentActivity() {
         recyclerView.adapter = adapter
     }
 
-    // Mise a jour UI progressbar
     private fun setRecyclerViewLoading(recyclerView: RecyclerView, progressBar: ProgressBar, isLoading: Boolean) {
         refreshButton.isEnabled = !isLoading
 
         if (isLoading) {
             recyclerView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
-            refreshButton.alpha = 0.5f // Rendre le bouton semi-transparent pour indiquer qu'il est désactivé
+            refreshButton.alpha = 0.5f
         } else {
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            refreshButton.alpha = 1.0f // Restaurer la pleine opacité pour indiquer que le bouton est à nouveau actif
+            refreshButton.alpha = 1.0f
         }
     }
 
-
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer.cancel()
+    }
 }

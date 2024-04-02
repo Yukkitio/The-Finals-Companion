@@ -293,7 +293,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/refresh"
-        android:textColor="#666"
+        android:textColor="@color/textColor"
         android:background="@drawable/search_edittext_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
