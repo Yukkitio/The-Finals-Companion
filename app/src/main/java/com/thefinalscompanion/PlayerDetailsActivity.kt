@@ -60,7 +60,7 @@ class PlayerDetailsActivity : ComponentActivity() {
             toggleLoadingContent(true, worldRankProgressBar, worldRankValue)
             toggleLoadingContent(true,last24hProgressBar, rankChange)
             toggleLoadingContent(true, rankIconProgressBar, rankIcon)
-            val apiUrl = "https://api.the-finals-leaderboard.com/v1/leaderboard/s2/crossplay?raw=true&name=$name"
+            val apiUrl = "https://api.the-finals-leaderboard.com/v1/leaderboard/s2/crossplay?raw=true&name=${name.replace("#", "%23")}"
             lifecycleScope.launch {
                 try {
                     val dataJson = NetworkService().fetchLeaderboardData(apiUrl)
@@ -112,6 +112,8 @@ class PlayerDetailsActivity : ComponentActivity() {
             }
         }
     }
+
+
     private fun getRankedIcon(ri: Int): Int {
         return when (ri) {
             0 -> R.drawable.unranked

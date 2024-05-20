@@ -128,13 +128,19 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun displayFavoriteIfNeeded() {
-        val favoriteName = getSharedPreferences("Favorites", MODE_PRIVATE).getString("favoriteName", null)
+        val sharedPreferences = getSharedPreferences("Favorites", MODE_PRIVATE)
+        var favoriteName = sharedPreferences.getString("favoriteName", null)
+        Log.d(TAG, "Favorite name from SharedPreferences: $favoriteName")
+
+        favoriteName = favoriteName?.replace("#", "%23")
         if (!favoriteName.isNullOrEmpty()) {
             fetchFavoriteDetails(favoriteName)
         } else {
+            Log.d(TAG, "No favorite name found in SharedPreferences.")
             favoriteRecyclerView.adapter = null
         }
     }
+
 
     private fun fetchFavoriteDetails(favoriteName: String) {
         setRecyclerViewLoading(favoriteRecyclerView, favoriteProgressBar, true)
